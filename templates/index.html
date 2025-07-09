@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis - AI Text Analyzer</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            max-width: 700px;
+            margin-top: 50px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .main-title {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .btn-analyze {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-analyze:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+            color: white;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .result-card.positive {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .result-card.negative {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .emoji {
+            font-size: 40px;
+            margin-left: 10px;
+            animation: bounce 0.6s ease-in-out;
+        }
+
+        .confidence-text {
+            font-size: 1.1rem;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 60%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            80% { transform: translateY(-5px); }
+        }
+
+        .feature-icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            color: #7f8c8d;
+        }
+
+        .feature-icon {
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .feature-icon i {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container text-center">
+        <h1 class="main-title">🤖 AI Sentiment Analyzer</h1>
+        <p class="subtitle">Discover the emotion behind any text with advanced AI technology</p>
+        
+        <div class="feature-icons">
+            <div class="feature-icon">
+                <i class="fas fa-brain"></i>
+                <span>AI Powered</span>
+            </div>
+            <div class="feature-icon">
+                <i class="fas fa-bolt"></i>
+                <span>Instant Results</span>
+            </div>
+            <div class="feature-icon">
+                <i class="fas fa-shield-alt"></i>
+                <span>Accurate</span>
+            </div>
+        </div>
+
+        <form method="post">
+            <div class="mb-4">
+                <textarea class="form-control" name="text" rows="4" 
+                    placeholder="✍️ Type or paste your text here... (reviews, comments, social media posts, etc.)" 
+                    required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-analyze">
+                <i class="fas fa-search me-2"></i>Analyze Sentiment
+            </button>
+        </form>
+
+        {% if result %}
+        <div class="result-card {% if 'Positive' in result %}positive{% else %}negative{% endif %}">
+            <h3>
+                <i class="fas fa-chart-line me-2"></i>Analysis Result
+                <span class="emoji">
+                    {% if "Positive" in result %} 😊 {% else %} � {% endif %}
+                </span>
+            </h3>
+            <h4>{{result}}</h4>
+            <p class="confidence-text">
+                <i class="fas fa-percentage me-1"></i>Confidence Level: {{confidence}}
+            </p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>
